@@ -23,7 +23,7 @@ func writePump(socket *Socket, conn net.Conn){
 		select {
 			case data, ok:= <- send:
 				if !ok {			// chan 被关闭 (客户端断开)
-					msg := ParseCommand("close", addr, socket.port, nil, "Client is closed!", true)
+					msg := ParseCommand("close", addr, socket.port, nil, "", false)
 					socket.WS.send <- msg
 
 					(*socket.sends)[addr] = nil
@@ -82,7 +82,7 @@ func listen(client *Client, port uint16) {
 		if err != nil {
 			break
 		}
-		msg := ParseCommand("connect", conn.RemoteAddr().String(), socket.port, nil, "Listen Success!", false)
+		msg := ParseCommand("connect", conn.RemoteAddr().String(), socket.port, nil, "", false)
 		client.send <- msg
 		go handleConnection(socket, conn)
 	}

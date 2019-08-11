@@ -8,7 +8,7 @@ func ParseCommand(command , addr string, port uint16, data *[]byte, message stri
 		data = &[]byte{}
 	}
 	com := Command{
-		Command: "create",
+		Command: command,
 		Data:    Data{
 			Addr:	 addr,
 			Port:    port,
@@ -66,14 +66,16 @@ func process(client *Client , message []byte){
 				}
 				(*socket.listen).Close()
 				delete(*client.sockets, port)
+				msg := ParseCommand("close", addr, port, nil, "", false)
+				client.send <- msg
 			} else if send, ok := (*socket.sends)[addr]; ok {
 				close(*send)	// 断线会有另一个包
 			} else {
-				msg := ParseCommand("close", "addr", port, nil, "Client not found!", true)
+				msg := ParseCommand("close", addr, port, nil, "Client not found!", true)
 				client.send <- msg
 			}
 		} else {
-			msg := ParseCommand("close", "addr", port, nil, "Port not found!", true)
+			msg := ParseCommand("close", addr, port, nil, "Port not found!", true)
 			client.send <- msg
 		}
 	}
