@@ -14,7 +14,7 @@ func ParseCommand(command , addr string, port uint16, data *[]byte, message stri
 			Port:    port,
 			Data:    *data,
 			Message: message,
-			Err:     true,
+			Err:     err,
 		},
 	}
 	msg, _ := json.Marshal(com)

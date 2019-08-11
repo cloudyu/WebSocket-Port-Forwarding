@@ -9,7 +9,7 @@ type Data struct {
 }
 
 type Command struct {
-	Command string		`json:"command"`
-	Data Data		`json:"data"`
+	Command string		`json:"command"`						// 命令
+	Data Data		`json:"data"`								// 参数
 }
 
